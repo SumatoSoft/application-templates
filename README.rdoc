@@ -1,0 +1,11 @@
+= ApplicationTemplates
+
+*Run:*
+
+<tt>rails new [application_full_path] -m [template_path] --skip-spring --skip-gemfile --skip-turbolinks</tt>
+
+*Optional:*
+
+<tt>--skip-theme</tt> - skip bootstrap theme installation.
+
+<tt>-compressed-assets "asset_name#1,asset_name#2,..."</tt> - set compressed assets list.
