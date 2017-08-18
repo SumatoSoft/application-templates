@@ -15,7 +15,13 @@ assets_names = parse_args('-compressed-assets')
 
 create_file 'Gemfile', <<RUBY
 source 'https://rubygems.org'
-gem 'rails', '~> 5.1.2'
+
+git_source(:github) do |repo_name|
+  repo_name = "\#{repo_name}/\#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/\#{repo_name}.git"
+end
+
+gem 'rails', '~> 5.1.4'
 gem 'pg', '~> 0.21.0'
 gem 'puma', '~> 3.9'
 gem 'sass-rails', '~> 5.0.6'
