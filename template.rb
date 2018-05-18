@@ -104,7 +104,6 @@ environment %Q(config.assets.configure do |env|
     env.gzip = false
   end
   config.assets.js_compressor = Uglifier.new output: { comments: :none }
-  config.logger = Syslog::Logger.new '#{app_name}'
             ), env: 'production'
 
 environment %q(config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
@@ -143,8 +142,7 @@ YAML
 require 'uglifier'
 
 )
-
-    copy_file 'production.rb', 'staging.rb'
+    `cp production.rb staging.rb`
   end
 
   remove_file 'database.yml'
@@ -193,7 +191,12 @@ YAML
   copy_file "#{config_path}/database.yml.example", "#{config_path}/database.yml"
 end
 
-environment %Q(config.action_mailer.delivery_method = :safety_mailer
+environment %Q(config.logger = Syslog::Logger.new '#{app_name}_production'
+            ), env: 'production'
+
+environment %Q(config.logger = Syslog::Logger.new '#{app_name}_staging'
+
+  config.action_mailer.delivery_method = :safety_mailer
   config.action_mailer.safety_mailer_settings = {
     allowed_matchers: [ // ],
     delivery_method: :smtp,
