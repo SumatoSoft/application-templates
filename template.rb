@@ -21,7 +21,7 @@ git_source(:github) do |repo_name|
   "https://github.com/\#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.1.4'
+gem 'rails', '~> 5.2.0'
 gem 'pg', '~> 0.21.0'
 gem 'puma', '~> 3.9'
 gem 'sass-rails', '~> 5.0.6'
@@ -33,17 +33,21 @@ gem 'bootstrap-sass', '~> 3.3.7'
 gem 'slim', '~> 3.0.8'
 gem 'slim-rails', '~> 3.1.2'
 
-gem 'simple_form', '~> 3.5.0'
+gem 'simple_form', '~> 4.0.1'
 #{skip_theme ? '' : "gem 'bootstrap_sb_admin_base_v2', '~> 0.3.3'"}
 
 # Authentication && Authorization
-gem 'devise', '~> 4.3.0'
+gem 'devise', '~> 4.4.0'
 
 #gem 'omniauth-oauth2', '~> 1.4.0'
 #gem 'omniauth-facebook', '~> 4.0.0'
 #gem 'omniauth-linkedin', '~> 0.2.0'
 #gem 'omniauth-twitter', '~> 1.3.0'
 #gem 'omniauth-google-oauth2', '~> 0.5.0'
+
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', '>= 1.1.0', require: false
+
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-airbrake-js-client', '~> 0.9'
@@ -120,22 +124,22 @@ environment %q(config.action_mailer.default_url_options = { host: 'localhost', p
 
 inside('config') do |config_path|
 
-  append_to_file 'secrets.yml', <<YAML
-errbit:
-  project_key: 'CHANGE_ME'
+#   append_to_file 'secrets.yml', <<YAML
+# errbit:
+#   project_key: 'CHANGE_ME'
+#
+# staging:
+#   secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
+#   mailer:
+#     user_name: 'CHANGE_ME'
+#     password: 'CHANGE_ME'
+#     domain: '#{app_name}.demo.sumatosoft.com'
+#     address: 'CHANGE_ME'
+#   errbit:
+#     project_key: 'CHANGE_ME'
+# YAML
 
-staging:
-  secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
-  mailer:
-    user_name: 'CHANGE_ME'
-    password: 'CHANGE_ME'
-    domain: '#{app_name}.demo.sumatosoft.com'
-    address: 'CHANGE_ME'
-  errbit:
-    project_key: 'CHANGE_ME'
-YAML
-
-  copy_file "#{config_path}/secrets.yml", "#{config_path}/secrets.yml.example"
+#  copy_file "#{config_path}/secrets.yml", "#{config_path}/secrets.yml.example"
 
   inside('environments') do
     prepend_to_file 'production.rb', %q(require 'syslog/logger'
