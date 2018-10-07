@@ -1,0 +1,7 @@
+config.require_master_key = false
+
+config.assets.configure do |env|
+  env.gzip = false
+end
+config.assets.js_compressor = Uglifier.new output: { comments: :none }
+config.logger = Syslog::Logger.new '%{app_name}_production'

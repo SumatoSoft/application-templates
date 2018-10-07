@@ -1,0 +1,37 @@
+image: 'circleci/ruby:%{ruby_version}-node-browsers'
+
+services:
+- postgres:latest
+
+variables:
+  GEM_HOME: vendor/ruby
+  PRONTO_GITLAB_API_ENDPOINT: https://gitlab.sumatosoft.com/api/v4
+
+cache:
+  key: '%{app_name}-cache-key'
+  paths:
+  - vendor/ruby
+
+before_script:
+- export RAILS_ENV=test
+
+test:
+  script:
+  - bundle config github.https true
+  - cp config/database.yml.ci config/database.yml
+  - cp config/secrets.yml.ci config/secrets.yml
+  - bundle install -j $(nproc) --path vendor  --without development # Install dependencies into ./vendor/ruby
+  - bundle exec rake db:create
+  - bundle exec rake db:schema:load
+  - bundle exec rspec
+  - pkill Xvfb
+
+pronto:
+  script:
+  - sudo apt -y install cmake
+  - gem install pronto
+  - gem install pronto-rubocop
+  - vendor/ruby/bin/pronto run -f gitlab -c origin/master --exit-code
+  - pkill Xvfb
+  except:
+  - master

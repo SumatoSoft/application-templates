@@ -1,0 +1,36 @@
+//= require airbrake-js-client
+
+<% if Rails.env.staging? || Rails.env.production?%>
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+$(document).ready(function() {
+  var airbrake, url;
+  airbrake = new airbrakeJs.Client({
+    projectId: "1",
+    projectKey: "<%= Rails.application.secrets.errbit[:project_key] %>"
+  });
+  url = 'https://errbit.sumatosoft.com';
+  airbrake.setHost(url);
+  airbrake.addFilter(function(notice) {
+    notice.context.environment = '<%= Rails.env %>';
+    return notice;
+  });
+  return window.onerror = __bind(function(message, file, line, column, errorObj) {
+    var data;
+    data = {
+      error: {
+        message: message,
+        fileName: file,
+        lineNumber: line,
+        column: column
+      }
+    };
+    if (errorObj != null) {
+      data['error'] = $.extend(data['error'], {
+        stack: errorObj.stack
+      });
+    }
+    return airbrake.notify(data);
+  }, this);
+});
+<% end %>
+

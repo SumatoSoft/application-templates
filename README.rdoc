@@ -2,7 +2,7 @@
 
 *Run:*
 
-<tt>rails new [application_full_path] -m [template_path] --skip-spring --skip-gemfile --skip-turbolinks</tt>
+<tt>rails new [application_full_path] -m [template_path] -ruby-version=2.5.1 --skip-spring --skip-gemfile --skip-turbolinks</tt>
 
 *Optional:*
 

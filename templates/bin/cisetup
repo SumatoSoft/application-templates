@@ -1,0 +1,4 @@
+export PULL_REQUEST_URL=${CI_PULL_REQUEST}
+echo ${CI_PULL_REQUEST}
+export PRONTO_PULL_REQUEST_ID=`echo $PULL_REQUEST_URL | grep -o -E '[0-9]+$' | head -1 | sed -e 's/^0\+//'`
+(bin/bundle exec pronto run -f github_pr -c origin/master) || true

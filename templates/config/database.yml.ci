@@ -1,0 +1,11 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: postgres
+  pool: 10
+
+test:
+  <<: *default
+  host: postgres
+  database: '%{app_name}_test'
+
