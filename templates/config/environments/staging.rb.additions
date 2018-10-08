@@ -1,0 +1,6 @@
+config.require_master_key = false
+
+config.logger = Syslog::Logger.new '%{app_name}_staging'
+
+config.action_mailer.delivery_method = :sendmail
+config.action_mailer.default_url_options = { host: '%{app_name}.demo.sumatosoft.com' }

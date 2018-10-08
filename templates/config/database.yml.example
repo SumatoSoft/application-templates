@@ -1,0 +1,25 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: postgres
+  pool: 5
+
+development:
+  <<: *default
+  database: '%{app_name}_dev'
+
+test:
+  <<: *default
+  database: '%{app_name}_test'
+
+staging:
+  <<: *default
+  database: '%{app_name}_staging'
+
+production:
+  <<: *default
+  database: '%{app_name}_prod'
+  username: username
+  password: password
+
+
